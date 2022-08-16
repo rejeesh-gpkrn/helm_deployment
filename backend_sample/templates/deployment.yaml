@@ -1,16 +1,16 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ include "backend_sample.fullname" . }}
+  name: {{ include "bsample.fullname" . }}
   labels:
-    {{- include "backend_sample.labels" . | nindent 4 }}
+    {{- include "bsample.labels" . | nindent 4 }}
 spec:
   {{- if not .Values.autoscaling.enabled }}
   replicas: {{ .Values.replicaCount }}
   {{- end }}
   selector:
     matchLabels:
-      {{- include "backend_sample.selectorLabels" . | nindent 6 }}
+      {{- include "bsample.selectorLabels" . | nindent 6 }}
   template:
     metadata:
       {{- with .Values.podAnnotations }}
@@ -18,19 +18,19 @@ spec:
         {{- toYaml . | nindent 8 }}
       {{- end }}
       labels:
-        {{- include "backend_sample.selectorLabels" . | nindent 8 }}
+        {{- include "bsample.selectorLabels" . | nindent 8 }}
     spec:
       {{- with .Values.imagePullSecrets }}
       imagePullSecrets:
         {{- toYaml . | nindent 8 }}
       {{- end }}
-      serviceAccountName: {{ include "backend_sample.serviceAccountName" . }}
+      serviceAccountName: {{ include "bsample.serviceAccountName" . }}
       securityContext:
         {{- toYaml .Values.podSecurityContext | nindent 8 }}
       volumes:
-        - name: volume-backend_sample-configmap
+        - name: volume-bsample-configmap
           configMap:
-            name: backend_sample-configmap
+            name: bsample-configmap
       containers:
         - name: {{ .Chart.Name }}
           securityContext:
